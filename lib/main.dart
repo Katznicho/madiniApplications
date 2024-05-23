@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:madini/app.dart';
+import 'package:change_app_package_name/change_app_package_name.dart';
 
 // void main() {
 //   runApp(const MyApp());
