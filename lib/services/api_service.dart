@@ -21,24 +21,42 @@ class ApiService {
     ));
   }
 
-  Future<Map<String, dynamic>> getProducts({int page = 1,int category_id =1 }) async {
+  Future<Map<String, dynamic>> getProducts({int page = 1, int category_id = 1}) async {
     try {
       final response = await _dio.get('/products?page=$page&category_id=$category_id');
       final responseData = response.data;
+
+      // Log response data
+      print('Response data: $responseData');
+
       // Parse pagination information
-      final pagination = responseData['pagination'];
-      final currentPage = pagination['current_page'];
-      final perPage = pagination['per_page'];
-      final total = pagination['total'];
+      // final pagination = responseData['pagination'];
+      // if (pagination == null) {
+      //   throw Exception('Pagination data not found');
+      // }
+
+      // final currentPage = pagination['current_page'];
+      // final perPage = pagination['per_page'];
+      // final total = pagination['total'];
       final products = responseData['data'];
+      
+      if (products == null) {
+        throw Exception('Products data not found');
+      }
+
       return {
-        'currentPage': currentPage,
-        'perPage': perPage,
-        'total': total,
+        // 'currentPage': currentPage,
+        // 'perPage': perPage,
+        // 'total': total,
         'products': products,
       };
     } on DioException catch (e) {
       // Handle DioError (network error, etc.)
+      print('Dio error: $e');
+      throw e;
+    } catch (e) {
+      // Handle other errors
+      print('Error: $e');
       throw e;
     }
   }

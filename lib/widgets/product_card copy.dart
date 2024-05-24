@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:madini/screens/item/item_description_page.dart';
 
+
 class ProductCard extends StatelessWidget {
-  final String imageUrl;
-  final String name;
-  final String price;
   final String category;
+  final String name;
+  final String imageUrl;
+  final String price;
 
   const ProductCard({
     Key? key,
-    required this.imageUrl,
-    required this.name,
-    required this.price,
     required this.category,
+    required this.name,
+    required this.imageUrl,
+    required this.price,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print("Image URL: $imageUrl");
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -39,39 +39,29 @@ class ProductCard extends StatelessWidget {
         );
       },
       child: Container(
-        width: 210, // Adjust as needed
-        margin: const EdgeInsets.symmetric(horizontal: 0),
-        padding: const EdgeInsets.all(8),
+        width: 200, // Adjust as needed
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
-          border: Border(
-            right: BorderSide(
-              color: Colors.grey,
-              width: 1.0,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.8),
+              spreadRadius: 2,
+              blurRadius: 10,
+              offset: const Offset(0, 3),
             ),
-            bottom: BorderSide(
-              color: Colors.grey,
-              width: 1.0,
-            ),
-          ),
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: Colors.grey.withOpacity(0.8),
-          //     spreadRadius: 2,
-          //     blurRadius: 10,
-          //     offset: const Offset(0, 3),
-          //   ),
-          // ],
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.network(
+              child: Image.asset(
                 imageUrl,
-                height: 110,
+                height: 100,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -84,7 +74,7 @@ class ProductCard extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -93,19 +83,13 @@ class ProductCard extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
-                    children: [
-                      Text('Add'),
+                    children: const [
+                      Icon(Icons.add),
                       SizedBox(width: 4),
-
-                      // Icon(Icons.add),
-                      Image.asset(
-                        'assets/images/cart_icon.jpg',
-                        width: 30,
-                        height: 30,
-                      ),
+                      Text('Add'),
                     ],
                   ),
                 ),

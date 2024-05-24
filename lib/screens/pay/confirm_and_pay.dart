@@ -37,36 +37,66 @@ class ConfirmAndPayPage extends StatelessWidget {
           style: TextStyle(color: Colors.black),
         ),
       ),
+
+      
       body: SingleChildScrollView(
+        
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Image.asset(
-                imageUrl,
+            // const SizedBox(height: 15),
+              const Divider(thickness: 0, height: 0),
+              const SizedBox(height: 15), 
+              Row (
+                children: [
+                  Center(
+              child: Image.network(
+                imageUrl ?? 'https://admin.madinigroup.com/storage/product/01HXS1ADCZWY0D5MZZRZFBM6RE.jpg',
                 height: 200,
+                width: 200,
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(height: 20),
+
+            Column(
+              children: [
+                
             Text(
               title,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
             ),
+             const SizedBox(height: 10),
             Text(
               description,
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 10),
             ),
             const SizedBox(height: 10),
             Text(
               'UGX $price',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
             ),
+             const SizedBox(height: 10),
+
+             Row (children: [
+              const Icon(Icons.star),
+             Text('5.00 (1)')
+             ],)
+
+             
+              ],
+
+            )
+
+                ],
+                
+              ),
+            
+            const SizedBox(height: 20),
             const Divider(thickness: 1, height: 30),
             Text(
               'Your payment is protected by Hamlet Group',
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
             ),
             const Divider(thickness: 1, height: 30),
             Text(
@@ -77,17 +107,26 @@ class ConfirmAndPayPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Quantity'),
+                Column(
+                  children: [
+                Text('Quantity', style: TextStyle(fontWeight: FontWeight.bold),),
                 Text('1 Tonne (1 Elf Truck)'),
-                TextButton(onPressed: () {}, child: Text('Edit')),
+                
+                  ],
+                ),
+                TextButton(onPressed: () {}, child: Text('Edit', style: TextStyle(decoration: TextDecoration.underline),)),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Deliver To:'),
+                Column(
+                  children: [
+                    Text('Deliver To:', style: TextStyle(fontWeight: FontWeight.bold),),
                 Text('Munyoyo'),
-                TextButton(onPressed: () {}, child: Text('Edit')),
+                  ],
+                ),
+                TextButton(onPressed: () {}, child: Text('Edit', style: TextStyle(decoration: TextDecoration.underline),)),
               ],
             ),
             const Divider(thickness: 1, height: 30),
@@ -103,6 +142,18 @@ class ConfirmAndPayPage extends StatelessWidget {
                 Text('UGX $price'),
               ],
             ),
+            const Divider(thickness: 1, height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+
+
+                Text('Total: UGX', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+                Text('UGX $price')
+
+              ],
+            ),
+
             const Divider(thickness: 1, height: 30),
             Text(
               'Pay With',
@@ -191,7 +242,7 @@ class ConfirmAndPayPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 15),
                 minimumSize: Size(double.infinity, 50),
               ),
-              child: Text('Confirm and Pay', style: TextStyle(fontSize: 18)),
+              child: Text('Confirm and Pay', style: TextStyle(fontSize: 18, color: Colors.white),),
             ),
           ],
         ),

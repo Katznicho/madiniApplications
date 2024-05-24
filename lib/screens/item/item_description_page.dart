@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:madini/screens/home/components/popular_product.dart';
 import 'package:madini/screens/pay/confirm_and_pay.dart';
 
 class ItemDescriptionPage extends StatelessWidget {
@@ -42,8 +43,9 @@ class ItemDescriptionPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Image.asset(
-                  imageUrl,
+                child: Image.network(
+                  imageUrl ??
+                      'https://admin.madinigroup.com/storage/product/01HXS1ADCZWY0D5MZZRZFBM6RE.jpg',
                   height: 200,
                   fit: BoxFit.cover,
                 ),
@@ -52,24 +54,30 @@ class ItemDescriptionPage extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    decoration: TextDecoration.underline),
               ),
-              const Divider(thickness: 1, height: 30),
+              // const Divider(thickness: 0, height: 30),
+              const SizedBox(height: 30),
+
               Text(
                 description,
                 style: TextStyle(fontSize: 16),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 15),
+              const Divider(thickness: 0, height: 30),
+              const SizedBox(height: 15),
               Text(
                 idealFor,
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.normal,
                   fontSize: 16,
                 ),
               ),
-              const Divider(thickness: 1, height: 30),
+              const SizedBox(height: 15),
+              const Divider(thickness: 0, height: 30),
+              const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -105,72 +113,97 @@ class ItemDescriptionPage extends StatelessWidget {
                   ),
                 ],
               ),
-              const Divider(thickness: 1, height: 30),
+              const SizedBox(height: 15),
+              const Divider(thickness: 0, height: 30),
+              const SizedBox(height: 15),
+
+              Row(children: [
+                Column(children: [
+                  Text(
+                    'UGX $price / Elf',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    deliveryInfo,
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ]),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Handle Add action
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.black,
+                        backgroundColor: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/cart_icon.jpg',
+                            height: 20,
+                            width: 20,
+                          ),
+                          const SizedBox(width: 5),
+                          Text('Add'),
+                        ],
+                      ),
+                    ),
+
+                    //add horizontal space
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ConfirmAndPayPage(
+                              imageUrl: imageUrl,
+                              title: title,
+                              description: description,
+                              idealFor: idealFor,
+                              strength: strength,
+                              aggregateSize: aggregateSize,
+                              price: price,
+                              deliveryInfo: deliveryInfo,
+                            ),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      ),
+                      child: Text(
+                        'Buy Now',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 50),
+              ]),
+            const SizedBox(height: 15),
+              const Divider(thickness: 0, height: 30),
+              const SizedBox(height: 25),
               Text(
                 'Value Added',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    decoration: TextDecoration.underline),
               ),
               const SizedBox(height: 50),
-              Text(
-                'UGX $price',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                deliveryInfo,
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      // Handle Add action
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.black, backgroundColor: Colors.grey[200],
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    ),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          'assets/images/cart_icon.jpg',
-                          height: 20,
-                          width: 20,
-                        ),
-                        const SizedBox(width: 5),
-                        Text('Add'),
-                      ],
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ConfirmAndPayPage(
-                            imageUrl: imageUrl,
-                            title: title,
-                            description: description,
-                            idealFor: idealFor,
-                            strength: strength,
-                            aggregateSize: aggregateSize,
-                            price: price,
-                            deliveryInfo: deliveryInfo,
-                          ),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                    ),
-                    child: Text('Buy Now'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
+              PopularProducts(page: 1, category_id: 2),
+              const SizedBox(height: 50),
             ],
           ),
         ),
