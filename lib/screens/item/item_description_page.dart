@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:madini/screens/pay/confirm_and_pay.dart';
 
 class ItemDescriptionPage extends StatelessWidget {
   final String imageUrl;
@@ -129,13 +130,37 @@ class ItemDescriptionPage extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.black, backgroundColor: Colors.grey[200],
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     ),
-                    child: Text('Add'),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/cart_icon.jpg',
+                          height: 20,
+                          width: 20,
+                        ),
+                        const SizedBox(width: 5),
+                        Text('Add'),
+                      ],
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // Handle Buy Now action
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ConfirmAndPayPage(
+                            imageUrl: imageUrl,
+                            title: title,
+                            description: description,
+                            idealFor: idealFor,
+                            strength: strength,
+                            aggregateSize: aggregateSize,
+                            price: price,
+                            deliveryInfo: deliveryInfo,
+                          ),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
