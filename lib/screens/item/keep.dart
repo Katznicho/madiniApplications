@@ -110,44 +110,57 @@ class ItemDescriptionPage extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               const SizedBox(height: 50),
-              Text(
-                'UGX $price',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                deliveryInfo,
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      // Handle Add action
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.black, backgroundColor: Colors.grey[200],
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                    ),
-                    child: Text('Add'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Handle Buy Now action
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                    ),
-                    child: Text('Buy Now'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'UGX $price',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                Text(
+                  deliveryInfo,
+                  style: TextStyle(fontSize: 14),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    // Add to cart logic
+                  },
+                  icon: Icon(Icons.add_shopping_cart),
+                  label: Text('Add'),
+                  style: ElevatedButton.styleFrom(
+                    shape: StadiumBorder(),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    // Buy now logic
+                  },
+                  child: Text('Buy Now'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    shape: StadiumBorder(),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
