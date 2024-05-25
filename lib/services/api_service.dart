@@ -60,4 +60,28 @@ class ApiService {
       throw e;
     }
   }
+
+  Future<Map<String, dynamic>> processOrder({required double amount, required int quantity}) async {
+    try {
+      final response = await _dio.post('/orders', data: {'amount': amount, 'quantity': quantity});
+      final responseData = response.data;
+
+      // Log response data
+      print('Response data: $responseData');
+
+      if (responseData == null) {
+        throw Exception('Order response data not found');
+      }
+
+      return responseData;
+    } on DioException catch (e) {
+      // Handle DioError (network error, etc.)
+      print('Dio error: $e');
+      throw e;
+    } catch (e) {
+      // Handle other errors
+      print('Error: $e');
+      throw e;
+    }
+  }
 }
