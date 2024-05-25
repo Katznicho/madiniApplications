@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:madini/screens/pay/pesapal.dart';
 
 class ConfirmAndPayPage extends StatelessWidget {
   final String imageUrl;
@@ -161,22 +162,22 @@ class ConfirmAndPayPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             ListTile(
-              leading: Icon(Icons.credit_card),
+              leading: Image.asset('assets/images/visa.jpg', width: 30, height: 30,),
               title: Text('Credit or debit card'),
               trailing: Icon(Icons.add),
             ),
             ListTile(
-              leading: Icon(Icons.payment),
-              title: Text('PayPal'),
+              leading: Image.asset('assets/images/apple pay.jpeg', width: 30, height: 30,),
+              title: Text('Apple Pay'),
               trailing: Icon(Icons.add),
             ),
             ListTile(
-              leading: Icon(Icons.mobile_friendly),
+              leading: Image.asset('assets/images/airtel.jpg', width: 30, height: 30,),
               title: Text('Airtel Money'),
               trailing: Icon(Icons.add),
             ),
             ListTile(
-              leading: Icon(Icons.mobile_friendly),
+              leading: Image.asset('assets/images/mtn.jpg', width: 30, height: 30,),
               title: Text('MTN Mobile Money'),
               trailing: Icon(Icons.add),
             ),
@@ -236,6 +237,18 @@ class ConfirmAndPayPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // Handle payment confirmation
+                 Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WebViewExample(
+//              url: imageUrl,
+// price: int.tryParse(price) ?? 0,
+//    description:  description,
+//    name: title,
+
+            ),
+          ),
+        );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,

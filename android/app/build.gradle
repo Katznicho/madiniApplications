@@ -45,7 +45,7 @@ android {
     }
    signingConfigs {
     release {
-            storeFile file("/Users/supportteam/Desktop/my-release-key.jks")
+            storeFile file("my-release-key.jks")
             storePassword "madinigroup"
             keyAlias "my-key-alias"
             keyPassword "madinigroup"

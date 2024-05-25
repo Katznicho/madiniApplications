@@ -1,15 +1,21 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:madini/app.dart';
 import 'package:change_app_package_name/change_app_package_name.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 // void main() {
 //   runApp(const MyApp());
 // }
 
 void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+
+
+
   await runZonedGuarded(
     () async {
       final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

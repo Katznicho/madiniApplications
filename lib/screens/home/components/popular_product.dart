@@ -72,7 +72,7 @@ Future<void> _fetchProducts() async {
                 return Padding(
                   padding: const EdgeInsets.only(left: 20),
                   child: ProductCard(
-                    imageUrl: product['imageUrl'] ?? 'https://admin.madinigroup.com/storage/product/01HXS1ADCZWY0D5MZZRZFBM6RE.jpg',
+                    imageUrl: product['image_url'] ?? 'https://admin.madinigroup.com/storage/product/01HXS1ADCZWY0D5MZZRZFBM6RE.jpg',
                     name: product['name'] ?? 'No Name',
                     price: product['price'].toString(),
                     category: product['category'] ?? 'Unknown',
