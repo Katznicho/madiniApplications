@@ -61,9 +61,27 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> processOrder({required double amount, required int quantity}) async {
+ Future<Map<String, dynamic>> processOrder({
+    required double amount,
+    required int quantity,
+    // required String phoneNumber,
+    // required String paymentPhoneNumber,
+    // required String firstName,
+    // required String lastName,
+  }) async {
     try {
-      final response = await _dio.post('/orders', data: {'amount': amount, 'quantity': quantity});
+      final response = await _dio.post(
+        '/processOrder',
+        data: {
+          'amount': amount.toString(),
+          // 'phone_number': phoneNumber,
+          // 'payment_phone_number': paymentPhoneNumber,
+          // 'first_name': firstName,
+          // 'last_name': lastName,
+          'quantity': quantity,
+        },
+      );
+
       final responseData = response.data;
 
       // Log response data

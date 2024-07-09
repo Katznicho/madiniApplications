@@ -17,6 +17,7 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Image URL Parsed: $imageUrl');
     return GestureDetector(
       onTap: () {
         print("Image URL: $imageUrl");
@@ -55,25 +56,25 @@ class ProductCard extends StatelessWidget {
               width: 1.0,
             ),
           ),
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: Colors.grey.withOpacity(0.8),
-          //     spreadRadius: 2,
-          //     blurRadius: 10,
-          //     offset: const Offset(0, 3),
-          //   ),
-          // ],
+          
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.network(
+              child: Image.asset(
+                
                 imageUrl,
+
                 height: 110,
                 width: double.infinity,
                 fit: BoxFit.cover,
+             
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+                  return _buildPlaceholder();
+                },
               ),
             ),
             const SizedBox(height: 10),
@@ -99,8 +100,6 @@ class ProductCard extends StatelessWidget {
                     children: [
                       Text('Add'),
                       SizedBox(width: 4),
-
-                      // Icon(Icons.add),
                       Image.asset(
                         'assets/images/cart_icon.jpg',
                         width: 30,
@@ -119,6 +118,16 @@ class ProductCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildPlaceholder() {
+    return Center(
+      child: SizedBox(
+        width: 110,
+        height: 110,
+        child: Placeholder(), // Replace with your placeholder widget/image
       ),
     );
   }

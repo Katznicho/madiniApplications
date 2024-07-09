@@ -1,37 +1,39 @@
-
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-// import 'package:path_provider/path_provider.dart';
+import 'package:madini/services/api_service.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-// #docregion platform_imports
-// Import for Android features.
 import 'package:webview_flutter_android/webview_flutter_android.dart';
-// Import for iOS features.
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
-// #enddocregion platform_imports
+import 'package:dio/dio.dart';
+import 'package:madini/services/token_service.dart';
 
+class Pesapal extends StatefulWidget {
+  final double? amount;
+  final int? quantity;
+  final String redirectUrl;
 
-
-class WebViewExample extends StatefulWidget {
-  const WebViewExample({super.key});
+  const Pesapal({super.key, required this.amount, required this.quantity, required this.redirectUrl});
 
   @override
-  State<WebViewExample> createState() => _WebViewExampleState();
+  State<Pesapal> createState() => _PesapalState();
 }
 
-class _WebViewExampleState extends State<WebViewExample> {
+class _PesapalState extends State<Pesapal> {
   late final WebViewController _controller;
 
   @override
   void initState() {
-    super.initState();
 
-    // #docregion platform_features
+    super.initState();
+    _initializeWebView();
+     debugPrint('Sending request to API with amount: ${widget.amount}, quantity: ${widget.quantity}');
+  }
+
+  Future<void> _initializeWebView() async {
     late final PlatformWebViewControllerCreationParams params;
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
       params = WebKitWebViewControllerCreationParams(
@@ -44,7 +46,6 @@ class _WebViewExampleState extends State<WebViewExample> {
 
     final WebViewController controller =
         WebViewController.fromPlatformCreationParams(params);
-    // #enddocregion platform_features
 
     controller
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -67,7 +68,7 @@ Page resource error:
   description: ${error.description}
   errorType: ${error.errorType}
   isForMainFrame: ${error.isForMainFrame}
-          ''');
+            ''');
           },
           onNavigationRequest: (NavigationRequest request) {
             if (request.url.startsWith('https://www.youtube.com/')) {
@@ -77,7 +78,6 @@ Page resource error:
             debugPrint('allowing navigation to ${request.url}');
             return NavigationDecision.navigate;
           },
-        
           onUrlChange: (UrlChange change) {
             debugPrint('url change to ${change.url}');
           },
@@ -93,34 +93,61 @@ Page resource error:
             SnackBar(content: Text(message.message)),
           );
         },
-      )
-      ..loadRequest(Uri.parse('https://google.com'));
+      );
 
-    // #docregion platform_features
     if (controller.platform is AndroidWebViewController) {
       AndroidWebViewController.enableDebugging(true);
       (controller.platform as AndroidWebViewController)
           .setMediaPlaybackRequiresUserGesture(false);
     }
-    // #enddocregion platform_features
 
     _controller = controller;
+
+    // Call the API and load the redirect URL
+    await _loadRedirectUrl();
   }
+
+ Future<void> _loadRedirectUrl() async {
+  try {
+    // final apiService = ApiService();
+    // final response = await apiService.processOrder(
+    //   amount: widget.amount!.toDouble(),
+    //   quantity: widget.quantity!,
+    // );
+
+    // final redirectUrl = response['redirect_url'];
+    // final redirectUrl = 'https://madinigroup.com/';
+    if (widget.redirectUrl != null) {
+      _controller.loadRequest(Uri.parse(widget.redirectUrl));
+    } else {
+      debugPrint('Redirect URL not found in the response');
+      // Optionally show a user-friendly message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Unable to load the payment page. Please try again later.')),
+      );
+    }
+  } catch (e) {
+    debugPrint('Error loading redirect URL: $e');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error loading the payment page: $e')),
+    );
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Pesapal'),
-        // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
+        title: const Text('Payment Page'),
         actions: <Widget>[
-          NavigationControls(webViewController: _controller),
-          SampleMenu(webViewController: _controller),
+          // NavigationControls(webViewController: _controller),
+          // SampleMenu(webViewController: _controller),
         ],
       ),
       body: WebViewWidget(controller: _controller),
-      floatingActionButton: favoriteButton(),
+      // floatingActionButton: favoriteButton(),
     );
   }
 
@@ -167,8 +194,6 @@ Page resource error:
             ),
           ),
           actions: <Widget>[
-            // Explicitly cancel the request on iOS as the OS does not emit new
-            // requests when a previous request is pending.
             TextButton(
               onPressed: () {
                 httpRequest.onCancel();
@@ -197,18 +222,12 @@ Page resource error:
 
 enum MenuOptions {
   showUserAgent,
-
   clearCookies,
-
   doPostRequest,
-
 }
 
 class SampleMenu extends StatelessWidget {
-  SampleMenu({
-    super.key,
-    required this.webViewController,
-  });
+  SampleMenu({super.key, required this.webViewController});
 
   final WebViewController webViewController;
   late final WebViewCookieManager cookieManager = WebViewCookieManager();
@@ -221,34 +240,13 @@ class SampleMenu extends StatelessWidget {
         switch (value) {
           case MenuOptions.showUserAgent:
             _onShowUserAgent();
-          // case MenuOptions.listCookies:
-          //   _onListCookies(context);
+            break;
           case MenuOptions.clearCookies:
             _onClearCookies(context);
-          // case MenuOptions.addToCache:
-          //   _onAddToCache(context);
-          // case MenuOptions.listCache:
-          //   _onListCache();
-          // case MenuOptions.clearCache:
-          //   _onClearCache(context);
-          // case MenuOptions.navigationDelegate:
-          //   _onNavigationDelegateExample();
+            break;
           case MenuOptions.doPostRequest:
             _onDoPostRequest();
-          // case MenuOptions.loadLocalFile:
-          //   _onLoadLocalFileExample();
-          // case MenuOptions.loadFlutterAsset:
-            _onLoadFlutterAssetExample();
-          // case MenuOptions.loadHtmlString:
-          //   _onLoadHtmlStringExample();
-          // case MenuOptions.transparentBackground:
-          //   _onTransparentBackground();
-          // case MenuOptions.setCookie:
-          //   _onSetCookie();
-          // case MenuOptions.logExample:
-          //   _onLogExample();
-          // case MenuOptions.basicAuthentication:
-          //   _promptForUrl(context);
+            break;
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuItem<MenuOptions>>[
@@ -256,75 +254,22 @@ class SampleMenu extends StatelessWidget {
           value: MenuOptions.showUserAgent,
           child: Text('Show user agent'),
         ),
-        // const PopupMenuItem<MenuOptions>(
-        //   value: MenuOptions.listCookies,
-        //   child: Text('List cookies'),
-        // ),
         const PopupMenuItem<MenuOptions>(
           value: MenuOptions.clearCookies,
           child: Text('Clear cookies'),
         ),
-       
         const PopupMenuItem<MenuOptions>(
           value: MenuOptions.doPostRequest,
           child: Text('Post Request'),
         ),
-        
       ],
     );
   }
 
   Future<void> _onShowUserAgent() {
-    // Send a message with the user agent string to the Toaster JavaScript channel we registered
-    // with the WebView.
     return webViewController.runJavaScript(
       'Toaster.postMessage("User Agent: " + navigator.userAgent);',
     );
-  }
-
-  Future<void> _onListCookies(BuildContext context) async {
-    final String cookies = await webViewController
-        .runJavaScriptReturningResult('document.cookie') as String;
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const Text('Cookies:'),
-            _getCookieList(cookies),
-          ],
-        ),
-      ));
-    }
-  }
-
-  Future<void> _onAddToCache(BuildContext context) async {
-    await webViewController.runJavaScript(
-      'caches.open("test_caches_entry"); localStorage["test_localStorage"] = "dummy_entry";',
-    );
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Added a test entry to cache.'),
-      ));
-    }
-  }
-
-  Future<void> _onListCache() {
-    return webViewController.runJavaScript('caches.keys()'
-        // ignore: missing_whitespace_between_adjacent_strings
-        '.then((cacheKeys) => JSON.stringify({"cacheKeys" : cacheKeys, "localStorage" : localStorage}))'
-        '.then((caches) => Toaster.postMessage(caches))');
-  }
-
-  Future<void> _onClearCache(BuildContext context) async {
-    await webViewController.clearCache();
-    await webViewController.clearLocalStorage();
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Cache cleared.'),
-      ));
-    }
   }
 
   Future<void> _onClearCookies(BuildContext context) async {
@@ -340,87 +285,12 @@ class SampleMenu extends StatelessWidget {
     }
   }
 
-
-
-  Future<void> _onSetCookie() async {
-    await cookieManager.setCookie(
-      const WebViewCookie(
-        name: 'foo',
-        value: 'bar',
-        domain: 'httpbin.org',
-        path: '/anything',
-      ),
-    );
-    await webViewController.loadRequest(Uri.parse(
-      'https://httpbin.org/anything',
-    ));
-  }
-
   Future<void> _onDoPostRequest() {
     return webViewController.loadRequest(
       Uri.parse('https://httpbin.org/post'),
       method: LoadRequestMethod.post,
       headers: <String, String>{'foo': 'bar', 'Content-Type': 'text/plain'},
       body: Uint8List.fromList('Test Body'.codeUnits),
-    );
-  }
-
-  Future<void> _onLoadLocalFileExample() async {
-    // final String pathToIndex = await _prepareLocalFile();
-    // await webViewController.loadFile(pathToIndex);
-    print('hi');
-  }
-
-  Future<void> _onLoadFlutterAssetExample() {
-    return webViewController.loadFlutterAsset('assets/www/index.html');
-  }
-
-
-
-  Widget _getCookieList(String cookies) {
-    if (cookies == '""') {
-      return Container();
-    }
-    final List<String> cookieList = cookies.split(';');
-    final Iterable<Text> cookieWidgets =
-        cookieList.map((String cookie) => Text(cookie));
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      mainAxisSize: MainAxisSize.min,
-      children: cookieWidgets.toList(),
-    );
-  }
-
-
-  Future<void> _promptForUrl(BuildContext context) {
-    final TextEditingController urlTextController = TextEditingController();
-
-    return showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Input URL to visit'),
-          content: TextField(
-            decoration: const InputDecoration(labelText: 'URL'),
-            autofocus: true,
-            controller: urlTextController,
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                if (urlTextController.text.isNotEmpty) {
-                  final Uri? uri = Uri.tryParse(urlTextController.text);
-                  if (uri != null && uri.scheme.isNotEmpty) {
-                    webViewController.loadRequest(uri);
-                    Navigator.pop(context);
-                  }
-                }
-              },
-              child: const Text('Visit'),
-            ),
-          ],
-        );
-      },
     );
   }
 }
@@ -445,6 +315,7 @@ class NavigationControls extends StatelessWidget {
                   const SnackBar(content: Text('No back history item')),
                 );
               }
+              return;
             }
           },
         ),
@@ -459,12 +330,15 @@ class NavigationControls extends StatelessWidget {
                   const SnackBar(content: Text('No forward history item')),
                 );
               }
+              return;
             }
           },
         ),
         IconButton(
           icon: const Icon(Icons.replay),
-          onPressed: () => webViewController.reload(),
+          onPressed: () {
+            webViewController.reload();
+          },
         ),
       ],
     );

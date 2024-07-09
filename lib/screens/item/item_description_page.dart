@@ -43,9 +43,9 @@ class ItemDescriptionPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Image.network(
+                child: Image.asset(
                   imageUrl ??
-                      'https://admin.madinigroup.com/storage/product/01HXS1ADCZWY0D5MZZRZFBM6RE.jpg',
+                      'assets/images/dls.jpg',
                   height: 200,
                   fit: BoxFit.cover,
                 ),

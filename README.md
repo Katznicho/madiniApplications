@@ -1,4 +1,4 @@
-# madini
+# madiniapp
 
 A new Flutter project.
 

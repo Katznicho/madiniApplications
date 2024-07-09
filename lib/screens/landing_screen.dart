@@ -35,7 +35,7 @@ class LandingScreen extends StatelessWidget {
             children: [
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -58,7 +58,7 @@ class LandingScreen extends StatelessWidget {
                     Column(
                       children: [
                         Image.asset('assets/images/industry_icon.jpg',
-                            width: 30, height: 30),
+                            width: 50, height: 30),
                         Text('Industry'),
                       ],
                     ),
@@ -82,16 +82,17 @@ class LandingScreen extends StatelessWidget {
 
               SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
                         // Icon(Icons.map, size: 50),
+                         SizedBox(width: 10),
                         Image.asset('assets/images/delivery_icon.jpg',
                             width: 30, height: 30),
-                        SizedBox(width: 8),
+                        SizedBox(width: 10),
                         Column(
                           children: [
                             Text(
@@ -103,6 +104,7 @@ class LandingScreen extends StatelessWidget {
                         )
                       ],
                     ),
+                      SizedBox(width: 10,),
                     Container(
                       // padding: EdgeInsets.all(10.0),
                       margin: EdgeInsets.all(4.0),
@@ -110,6 +112,7 @@ class LandingScreen extends StatelessWidget {
                       height: 50,
                       color: Colors.grey,
                     ),
+                  
                     Row(
                       children: [
                         // Icon(Icons.people, size: 50),

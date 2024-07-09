@@ -1,6 +1,6 @@
 {
-    "name": "madini",
-    "short_name": "madini",
+    "name": "madiniapp",
+    "short_name": "madiniapp",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
