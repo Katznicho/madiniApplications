@@ -42,6 +42,8 @@ class _ConfirmAndPayPageState extends State<ConfirmAndPayPage> {
   String userEmail = '';
   String firstName = '';
   String lastName = '';
+  bool _isLoading = false;
+  // String _errorMessage = '';
 
   @override
   void initState() {
@@ -402,18 +404,25 @@ class _ConfirmAndPayPageState extends State<ConfirmAndPayPage> {
               'By selecting the button below, I agree to Madini\'s policy, delivery and refund policy and that Madini can charge my payment method if items have been delivered on site.',
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _confirmAndPay,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding: EdgeInsets.symmetric(vertical: 15),
-                minimumSize: Size(double.infinity, 50),
-              ),
-              child: Text(
-                'Confirm and Pay',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-            ),
+           ElevatedButton(
+  onPressed: () {
+    setState(() {
+      _isLoading = true; // Set loading state to true
+    });
+    _confirmAndPay(); // Call your existing function for confirmation and payment
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.red,
+    padding: EdgeInsets.symmetric(vertical: 15),
+    minimumSize: Size(double.infinity, 50),
+  ),
+  child: _isLoading
+      ? CircularProgressIndicator() // Show circular loader when loading
+      : Text(
+          'Confirm and Pay',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+)
           ],
         ),
       ),
